@@ -7,14 +7,12 @@ using System.Threading.Tasks;
 
 namespace GestHotelsDomain.Entities
 {
-    public class Hotel
+    public class Price
     {
+        [ForeignKey("PriceList")]
         public int Id { get; set; }
-        public string Name { get; set; }
-        public string Adress { get; set; }
-        public int Stars { get; set; }
-        public List<Room> Rooms { get; set; }
-
-
+        public decimal Cost { get; set; }
+        public DateTime Date { get; set; }
+        public int PriceListId { get; set; }
     }
 }
