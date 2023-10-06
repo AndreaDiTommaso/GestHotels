@@ -83,12 +83,12 @@ namespace GestHotelsApi.Controllers
         {
             if (_context.Hotel == null)
             {
-                return Problem("Entity set 'WebApplicationTestContext.Person'  is null.");
+                return Problem("Entity set 'HotelDbContext.Hotel'  is null.");
             }
             _context.Hotel.Add(hotel);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetPerson", new { id = hotel.Id }, hotel);
+            return CreatedAtAction("GetHotel", new { id = hotel.Id }, hotel);
         }
 
         // DELETE: api/People/5
