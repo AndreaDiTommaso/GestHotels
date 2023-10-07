@@ -25,7 +25,11 @@ namespace GestHotelsApi.Controllers
           {
               return NotFound();
           }
-            return await _context.Room.ToListAsync();
+            return await _context.Room
+                .Include(r => r.PriceList)
+                .ThenInclude(p => p.Prices)
+                .Include(r => r.Type)
+                .ToListAsync();
         }
 
         // GET: api/Rooms/5
@@ -36,7 +40,11 @@ namespace GestHotelsApi.Controllers
           {
               return NotFound();
           }
-            var room = await _context.Room.FindAsync(id);
+            var room = await _context.Room
+                .Include(r => r.PriceList)
+                .ThenInclude(p => p.Prices)
+                .Include(r => r.Type)
+                .FirstOrDefaultAsync(r => r.Id == id);
 
             if (room == null)
             {

@@ -16,14 +16,24 @@ namespace GestHotelsDomain
         public DbSet<PriceList> PriceList { get; set; }
         public DbSet<Room> Room { get; set; }
         public DbSet<RoomType> RoomType { get; set; }
-        protected override void OnConfiguring(DbContextOptionsBuilder builder)
+        //protected override void OnConfiguring(DbContextOptionsBuilder builder)
+        //{
+        //    IConfigurationRoot configuration = new ConfigurationBuilder()
+        //    .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+        //    .AddJsonFile("appsettings.json")
+        //    .Build();
+        //    builder.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+        //    //builder.UseSqlServer("Data Source=PC-ANDREA;Initial Catalog=prenotazione;Integrated Security=True");
+        //}
+        protected override void OnModelCreating(ModelBuilder builder)
         {
-            IConfigurationRoot configuration = new ConfigurationBuilder()
-            .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-            .AddJsonFile("appsettings.json")
-            .Build();
-            builder.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
-            //builder.UseSqlServer("Data Source=PC-ANDREA;Initial Catalog=prenotazione;Integrated Security=True");
+            builder.Entity<Price>()
+                .HasAlternateKey(p => new { p.PriceListId, p.Date })
+                .HasName("IX_UniqueKeyConstraint");
+            //builder.Entity<RoomType>()
+            //    .HasAlternateKey(r => new { r.Id, r.RoomId })
+            //    .HasName("IX_UniqueKeyConstraint");
+
         }
     }
 }

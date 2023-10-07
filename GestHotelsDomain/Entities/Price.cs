@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -9,10 +11,15 @@ namespace GestHotelsDomain.Entities
 {
     public class Price
     {
-        [ForeignKey("PriceList")]
         public int Id { get; set; }
         public decimal Cost { get; set; }
-        public DateTime Date { get; set; }
+
+        [Required]
+        [ForeignKey("PriceList")]
         public int PriceListId { get; set; }
+
+        [Required]
+        public DateTime Date { get; set; }
+       
     }
 }

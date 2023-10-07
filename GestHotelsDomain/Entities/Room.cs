@@ -9,11 +9,17 @@ namespace GestHotelsDomain.Entities
 {
     public class Room
     {
-        [ForeignKey("Hotel")]
+       
         public int Id { get; set; }
         public string Name { get; set; }
+
+       
         public RoomType Type { get; set; }
-        public int HotelId { get; set; }
+
+     
         public PriceList PriceList { get; set; }
+
+        [ForeignKey("Hotel")]
+        public int HotelId { get; set; }
     }
 }

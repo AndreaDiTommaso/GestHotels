@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GestHotelsDomain.Entities;
@@ -29,7 +25,9 @@ namespace GestHotelsApi.Controllers
           {
               return NotFound();
           }
-            return await _context.PriceList.ToListAsync();
+            return await _context.PriceList
+                .Include(p => p.Prices)
+                .ToListAsync();
         }
 
         // GET: api/PriceLists/5
@@ -40,7 +38,9 @@ namespace GestHotelsApi.Controllers
           {
               return NotFound();
           }
-            var priceList = await _context.PriceList.FindAsync(id);
+            var priceList = await _context.PriceList
+                .Include(p => p.Prices)
+                .FirstOrDefaultAsync(p => p.Id == id);
 
             if (priceList == null)
             {

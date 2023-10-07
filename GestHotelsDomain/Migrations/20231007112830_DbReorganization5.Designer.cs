@@ -4,6 +4,7 @@ using GestHotelsDomain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GestHotelsDomain.Migrations
 {
     [DbContext(typeof(HotelDbContext))]
-    partial class HotelDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231007112830_DbReorganization5")]
+    partial class DbReorganization5
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -105,9 +107,14 @@ namespace GestHotelsDomain.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("TypeId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("HotelId");
+
+                    b.HasIndex("TypeId");
 
                     b.ToTable("Room");
                 });
@@ -124,13 +131,7 @@ namespace GestHotelsDomain.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("RoomId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("RoomId")
-                        .IsUnique();
 
                     b.ToTable("RoomType");
                 });
@@ -160,15 +161,14 @@ namespace GestHotelsDomain.Migrations
                         .HasForeignKey("HotelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
 
-            modelBuilder.Entity("GestHotelsDomain.Entities.RoomType", b =>
-                {
-                    b.HasOne("GestHotelsDomain.Entities.Room", null)
-                        .WithOne("Type")
-                        .HasForeignKey("GestHotelsDomain.Entities.RoomType", "RoomId")
+                    b.HasOne("GestHotelsDomain.Entities.RoomType", "Type")
+                        .WithMany()
+                        .HasForeignKey("TypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Type");
                 });
 
             modelBuilder.Entity("GestHotelsDomain.Entities.Hotel", b =>
@@ -184,9 +184,6 @@ namespace GestHotelsDomain.Migrations
             modelBuilder.Entity("GestHotelsDomain.Entities.Room", b =>
                 {
                     b.Navigation("PriceList")
-                        .IsRequired();
-
-                    b.Navigation("Type")
                         .IsRequired();
                 });
 #pragma warning restore 612, 618
