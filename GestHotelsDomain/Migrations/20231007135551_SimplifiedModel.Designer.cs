@@ -4,6 +4,7 @@ using GestHotelsDomain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GestHotelsDomain.Migrations
 {
     [DbContext(typeof(HotelDbContext))]
-    partial class HotelDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231007135551_SimplifiedModel")]
+    partial class SimplifiedModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -82,22 +84,22 @@ namespace GestHotelsDomain.Migrations
                     b.Property<int>("Cardnality")
                         .HasColumnType("int");
 
-                    b.Property<int>("DownMarginPercentage")
+                    b.Property<int>("HotelId")
                         .HasColumnType("int");
 
-                    b.Property<int>("HotelId")
+                    b.Property<int>("LowerBound")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("TopMarginPercentage")
-                        .HasColumnType("int");
-
                     b.Property<string>("TypeName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UpperBound")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

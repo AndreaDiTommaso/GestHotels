@@ -27,9 +27,6 @@ namespace GestHotelsApi.Controllers
             return await _context.Hotel
                 .Include(h =>h.Rooms)
                 .ThenInclude(r =>r.PriceList)
-                .ThenInclude(p => p.Prices)
-                .Include(h => h.Rooms)
-                .ThenInclude(r => r.Type)
                 .ToListAsync();
         }
 
@@ -44,9 +41,6 @@ namespace GestHotelsApi.Controllers
             var hotel = await _context.Hotel
                 .Include(h => h.Rooms)
                 .ThenInclude(r => r.PriceList)
-                .ThenInclude(p => p.Prices)
-                .Include(h => h.Rooms)
-                .ThenInclude(r => r.Type)
                 .FirstOrDefaultAsync(h => h.Id == id);
 
             if (hotel == null)
@@ -60,12 +54,14 @@ namespace GestHotelsApi.Controllers
         // PUT: api/People/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPerson(int id, Hotel hotel)
+        public async Task<IActionResult> PutPerson(int id, Hotel newHotel)
         {
-            if (id != hotel.Id)
+            var hotel = await _context.Hotel.FindAsync(id);
+            if (hotel == null)
             {
-                return BadRequest();
+                return NotFound();
             }
+            hotel.Modify(newHotel);
 
             _context.Entry(hotel).State = EntityState.Modified;
 

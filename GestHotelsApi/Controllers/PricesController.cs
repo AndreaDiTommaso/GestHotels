@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GestHotelsDomain.Entities;
 using GestHotelsDomain;
+using GestHotelsApi.Servicies;
 
 namespace GestHotelsApi.Controllers
 {
@@ -53,18 +54,29 @@ namespace GestHotelsApi.Controllers
         // PUT: api/Prices/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPrice(int id, Price price)
+        public async Task<IActionResult> PutPrice(int id, Price newPrice)
         {
-            if (id != price.Id)
+           
+            var price = await _context.Price.FindAsync(id);
+            if (price == null)
             {
-                return BadRequest();
+                return NotFound();
             }
-
+            price.Modify(newPrice);
             _context.Entry(price).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
+                HierarchyHelper hierarchyHelper = new HierarchyHelper(_context, price);
+                if (hierarchyHelper.ValidatePrice())
+                {
+                    await _context.SaveChangesAsync();
+                    return CreatedAtAction("GetPrice", new { id = price.Id }, price);
+                }
+                else
+                {
+                    return Problem("The price does not respect the hierarchy rules");
+                }
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -91,9 +103,18 @@ namespace GestHotelsApi.Controllers
               return Problem("Entity set 'HotelDbContext.Price'  is null.");
           }
             _context.Price.Add(price);
-            await _context.SaveChangesAsync();
+            HierarchyHelper hierarchyHelper = new HierarchyHelper(_context,price);
+          if (hierarchyHelper.ValidatePrice())
+            {
+                await _context.SaveChangesAsync();
+                return CreatedAtAction("GetPrice", new { id = price.Id }, price);
+            }
+          else
+            {
+                return Problem("The price does not respect the hierarchy rules");
+            } 
 
-            return CreatedAtAction("GetPrice", new { id = price.Id }, price);
+            
         }
 
         // DELETE: api/Prices/5
@@ -120,5 +141,70 @@ namespace GestHotelsApi.Controllers
         {
             return (_context.Price?.Any(e => e.Id == id)).GetValueOrDefault();
         }
+        //private bool ValidatePrice(Price price)
+        //{
+        //    RoomType roomType = _context.RoomType.FirstOrDefault(r => r.Id == price.RoomTypeId);
+        //    Hotel hotel = _context.Hotel
+        //        .Include(h => h.Rooms)
+        //        .ThenInclude(r => r.PriceList)
+        //        .FirstOrDefault(h => h.Id == roomType.HotelId);
+
+        //    int nextCardinality = 0;
+        //    List<int> listLowerCardinality = hotel.Rooms.Select(r => r.Cardnality).Where(c => c > roomType.Cardnality).ToList();
+        //    if (listLowerCardinality!=null)
+        //    {
+        //        nextCardinality= listLowerCardinality.Min();
+        //    }
+        //    int prevCardinality = 0;
+        //    List<int> listUpperCardinality = hotel.Rooms.Select(r => r.Cardnality).Where(c => c < roomType.Cardnality).ToList();
+        //    if (listUpperCardinality != null)
+        //    {
+        //        prevCardinality = listUpperCardinality.Max();
+        //    }
+        //    decimal nextPrice = 0;
+        //    decimal prevPrice = 0;
+
+        //    foreach (RoomType room in hotel.Rooms)
+        //    {
+        //        if(room.Cardnality == nextCardinality && room.PriceList != null)
+        //        {
+        //            decimal x = room.PriceList.FirstOrDefault(p => p.Date == price.Date).Cost;
+        //            if(nextPrice == 0)
+        //            {
+        //                nextPrice = x;
+        //            }
+        //            else
+        //            {
+        //                if (x < nextPrice)
+        //                { nextPrice = x; }
+        //            }
+                    
+        //        }
+        //        if (room.Cardnality == prevCardinality && room.PriceList != null)
+        //        {
+        //            decimal y = room.PriceList.FirstOrDefault(p => p.Date == price.Date).Cost;
+        //            if (y > prevPrice) { prevPrice = y; }
+        //        }
+        //    }
+        //    decimal upperBound = 0;
+        //    if (nextPrice != 0)
+        //    {
+        //        upperBound = nextPrice - (price.Cost * roomType.UpperBound) / 100;
+        //    }
+        //    decimal lowerBound = 0;
+        //    if (prevPrice != 0)
+        //    {
+        //        lowerBound = prevPrice + (prevPrice * roomType.LowerBound) / 100;
+        //    }
+        //    if((price.Cost> lowerBound || lowerBound==0) && (price.Cost< upperBound || upperBound==0))
+        //    {
+        //        return true;
+        //    }
+        //    else
+        //    {
+        //        return false;
+        //    }
+           
+        //}
     }
 }

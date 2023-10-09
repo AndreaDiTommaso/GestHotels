@@ -13,8 +13,6 @@ namespace GestHotelsDomain
         }
         public DbSet<Hotel> Hotel { get; set; }
         public DbSet<Price> Price { get; set; }
-        public DbSet<PriceList> PriceList { get; set; }
-        public DbSet<Room> Room { get; set; }
         public DbSet<RoomType> RoomType { get; set; }
         //protected override void OnConfiguring(DbContextOptionsBuilder builder)
         //{
@@ -28,7 +26,7 @@ namespace GestHotelsDomain
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Price>()
-                .HasAlternateKey(p => new { p.PriceListId, p.Date })
+                .HasAlternateKey(p => new { p.RoomTypeId, p.Date })
                 .HasName("IX_UniqueKeyConstraint");
             //builder.Entity<RoomType>()
             //    .HasAlternateKey(r => new { r.Id, r.RoomId })

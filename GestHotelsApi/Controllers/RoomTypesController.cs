@@ -29,7 +29,7 @@ namespace GestHotelsApi.Controllers
           {
               return NotFound();
           }
-            return await _context.RoomType.ToListAsync();
+            return await _context.RoomType.Include(r => r.PriceList).ToListAsync();
         }
 
         // GET: api/RoomTypes/5
@@ -40,7 +40,9 @@ namespace GestHotelsApi.Controllers
           {
               return NotFound();
           }
-            var roomType = await _context.RoomType.FindAsync(id);
+            var roomType = await _context.RoomType
+                .Include(r => r.PriceList)
+                .FirstOrDefaultAsync(r => r.Id == id);
 
             if (roomType == null)
             {
@@ -53,12 +55,14 @@ namespace GestHotelsApi.Controllers
         // PUT: api/RoomTypes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutRoomType(int id, RoomType roomType)
+        public async Task<IActionResult> PutRoomType(int id, RoomType newRoomType)
         {
-            if (id != roomType.Id)
+            var roomType = await _context.RoomType.FindAsync(id);
+            if (roomType == null)
             {
-                return BadRequest();
+                return NotFound();
             }
+            roomType.Modify(newRoomType);
 
             _context.Entry(roomType).State = EntityState.Modified;
 
@@ -120,5 +124,10 @@ namespace GestHotelsApi.Controllers
         {
             return (_context.RoomType?.Any(e => e.Id == id)).GetValueOrDefault();
         }
+        //private bool CheckCardinality(Price price)
+        //{
+            
+        //        return (_context.RoomType?.Any(e => e.== id)).GetValueOrDefault();
+        //}
     }
 }
