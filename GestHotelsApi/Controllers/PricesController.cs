@@ -6,8 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GestHotelsDomain.Entities;
-using GestHotelsDomain;
 using GestHotelsApi.Servicies;
+using GestHotelsDomain.Data;
 
 namespace GestHotelsApi.Controllers
 {

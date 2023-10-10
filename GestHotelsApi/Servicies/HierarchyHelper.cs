@@ -1,4 +1,4 @@
-﻿using GestHotelsDomain;
+﻿using GestHotelsDomain.Data;
 using GestHotelsDomain.Entities;
 using Microsoft.EntityFrameworkCore;
 

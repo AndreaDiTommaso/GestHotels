@@ -1,5 +1,10 @@
-using GestHotelsDomain;
+using GestHotelsDomain.Data;
+using GestHotelsDomain.Handlers.Hotel;
+using GestHotelsDomain.Queries.Hotel;
+using GestHotelsDomain.Repositories.Hotel;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,7 +17,11 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<HotelDbContext>(
     options => options.UseSqlServer( builder.Configuration.GetConnectionString("DefaultConnection")));
 
-
+var assembly = typeof(GetPriceListQuery).Assembly;
+builder.Services.AddMediatR(typeof(GetPriceListQuery).GetTypeInfo().Assembly);
+//builder.Services.AddMediatR(typeof(GetHotelByIdQuery).Assembly, typeof(GetHotelListQuery).Assembly);
+//builder.Services.AddMediatR(typeof(GetHotelListQuery).Assembly, typeof(GetHotelListQuery).Assembly);
+builder.Services.AddScoped<IPriceRepository, PriceRepository>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

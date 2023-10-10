@@ -2,11 +2,11 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
-namespace GestHotelsDomain
+namespace GestHotelsDomain.Data
 {
     public class HotelDbContext : DbContext
     {
-     
+
         public HotelDbContext(DbContextOptions<HotelDbContext> options) : base(options)
         {
 
