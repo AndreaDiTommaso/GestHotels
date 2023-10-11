@@ -1,6 +1,4 @@
 using GestHotelsDomain.Data;
-using GestHotelsDomain.Handlers.Hotel;
-using GestHotelsDomain.Queries.Hotel;
 using GestHotelsDomain.Queries.Price;
 using GestHotelsDomain.Repositories.Hotel;
 using GestHotelsDomain.Repositories.Price;
@@ -18,12 +16,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<HotelDbContext>(
-    options => options.UseSqlServer( builder.Configuration.GetConnectionString("DefaultConnection")));
+        options => options.UseSqlServer( 
+        builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var assembly = typeof(GetPriceListQuery).Assembly;
 builder.Services.AddMediatR(typeof(GetPriceListQuery).GetTypeInfo().Assembly);
-//builder.Services.AddMediatR(typeof(GetHotelByIdQuery).Assembly, typeof(GetHotelListQuery).Assembly);
-//builder.Services.AddMediatR(typeof(GetHotelListQuery).Assembly, typeof(GetHotelListQuery).Assembly);
 builder.Services.AddScoped<IPriceRepository, PriceRepository>();
 builder.Services.AddScoped<IHotelRepository, HotelRepository>();
 builder.Services.AddScoped<IRoomTypeRepository, RoomTypeRepository>();

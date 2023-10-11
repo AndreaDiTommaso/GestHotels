@@ -1,10 +1,8 @@
 ﻿using GestHotelsDomain.Commands.Hotel;
-using GestHotelsDomain.Data;
 using GestHotelsDomain.Entities;
 using GestHotelsDomain.Queries.Hotel;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace GestHotelsApi.Controllers
 {

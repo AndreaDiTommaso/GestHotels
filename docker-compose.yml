@@ -1,0 +1,30 @@
+version: '3.4'
+networks:
+    gesthotelnet:
+services:
+  gesthoteldb:
+    container_name: AppDb
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    ports:
+     - 8002:1433
+    environment:
+     - ACCEPT_EULA=Y
+     - MSSQL_SA_PASSWORD=Password#12345#
+    networks:
+     - gesthotelnet
+  gesthotelsapi:
+    container_name: WebApi
+    image: ${DOCKER_REGISTRY-}gesthotelsapi
+    build:
+      context: .
+      dockerfile: GestHotelsApi/Dockerfile
+    ports:
+     - 8001:80
+    depends_on:
+     - gesthoteldb
+    networks:
+     - gesthotelnet
+    #environment:
+    # - DB_HOST:AppDb
+    # - DB_NAME:HotelDb
+    # - DB_SA_PASSWORD: Password#12345#
