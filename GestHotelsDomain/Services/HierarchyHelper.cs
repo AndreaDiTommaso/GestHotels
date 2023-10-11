@@ -24,7 +24,7 @@ namespace GestHotelsDomain.Services
             int result = 0;
             try
             {
-                List<int> listLowerCardinality = this.hotel.Rooms.Select(r => r.Cardnality).Where(c => c < this.room.Cardnality).ToList();
+                List<int> listLowerCardinality = this.hotel.Rooms.Select(r => r.Cardinality).Where(c => c < this.room.Cardinality).ToList();
                 if (listLowerCardinality != null)
                 {
                     result = listLowerCardinality.Max();
@@ -42,7 +42,7 @@ namespace GestHotelsDomain.Services
             try
             {
                 int result = 0;
-                List<int> listUpperCardinality = this.hotel.Rooms.Select(r => r.Cardnality).Where(c => c > this.room.Cardnality).ToList();
+                List<int> listUpperCardinality = this.hotel.Rooms.Select(r => r.Cardinality).Where(c => c > this.room.Cardinality).ToList();
                 if (listUpperCardinality != null)
                 {
                     result = listUpperCardinality.Min();
@@ -60,7 +60,7 @@ namespace GestHotelsDomain.Services
             try
             {
                 List<RoomType> roomTypes = new List<RoomType>();
-                roomTypes = (List<RoomType>)this.hotel.Rooms.Select(r => r).Where(r => r.Cardnality == cardinality).ToList();
+                roomTypes = (List<RoomType>)this.hotel.Rooms.Select(r => r).Where(r => r.Cardinality == cardinality).ToList();
                 return roomTypes;
             }
             catch (Exception e)
@@ -115,7 +115,13 @@ namespace GestHotelsDomain.Services
         }
         public decimal GetUpperBound(decimal minUpperCost)
         {
-            return minUpperCost - (this.price.Cost * this.room.TopMarginPercentage) / 100;
+            if (minUpperCost == 0)
+            { return 0; }
+            else
+            {
+                return minUpperCost - (this.price.Cost * this.room.TopMarginPercentage) / 100;
+
+            }
 
         }
         public decimal GetLowerBound(decimal maxLowerBound)
@@ -181,7 +187,10 @@ namespace GestHotelsDomain.Services
 
                 try
                 {
-                    upperBound = GetUpperBound(GetMinCost(GetByCardinality(nextCardinality)));
+                    List<RoomType> list = GetByCardinality(nextCardinality);
+                    decimal minCost = GetMinCost(list);
+                    upperBound = GetUpperBound(minCost);
+                    
                 }
                 catch
                 {

@@ -23,7 +23,7 @@ namespace GestHotelsDomain.Handlers.RoomType
                 Name = command.Name,
                 TypeName = command.TypeName,
                 HotelId = command.HotelId,
-                Cardnality = command.Cardnality,
+                Cardinality = command.Cardnality,
                 TopMarginPercentage = command.TopMarginPercentage,
                 DownMarginPercentage = command.DownMarginPercentage
             };

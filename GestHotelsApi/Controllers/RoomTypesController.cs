@@ -40,7 +40,7 @@ namespace GestHotelsApi.Controllers
            roomType.Name,
            roomType.TypeName,
            roomType.HotelId,
-           roomType.Cardnality,
+           roomType.Cardinality,
            roomType.TopMarginPercentage,
            roomType.DownMarginPercentage
            ));
@@ -54,7 +54,7 @@ namespace GestHotelsApi.Controllers
                    newRoomType.Name,
                    newRoomType.TypeName,
                    newRoomType.HotelId,
-                   newRoomType.Cardnality,
+                   newRoomType.Cardinality,
                    newRoomType.TopMarginPercentage,
                    newRoomType.DownMarginPercentage));
             return roomType;

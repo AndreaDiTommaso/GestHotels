@@ -13,16 +13,16 @@ namespace GestHotelsDomain.Commands.RoomType
         public string? Name { get; set; }
         public string? TypeName { get; set; }
         public int HotelId { get; set; }
-        public int Cardnality { get; set; }
+        public int Cardinality { get; set; }
         public int TopMarginPercentage { get; set; }
         public int DownMarginPercentage { get; set; }
-        public UpdateRoomTypeCommand(int id, string? name, string? typeName, int hotelId, int cardnality, int topMarginPercentage, int downMarginPercentage)
+        public UpdateRoomTypeCommand(int id, string? name, string? typeName, int hotelId, int cardinality,  int topMarginPercentage, int downMarginPercentage)
         {
             Id = id;
             Name = name;
             TypeName = typeName;
             HotelId = hotelId;
-            Cardnality = cardnality;
+            Cardinality = cardinality;
             TopMarginPercentage = topMarginPercentage;
             DownMarginPercentage = downMarginPercentage;
         }

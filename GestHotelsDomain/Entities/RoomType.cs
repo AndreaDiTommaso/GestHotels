@@ -16,7 +16,7 @@ namespace GestHotelsDomain.Entities
 
         [ForeignKey("Hotel")]
         public int HotelId { get; set; }
-        public int Cardnality { get; set; }
+        public int Cardinality { get; set; }
         public int TopMarginPercentage { get; set; }
         public int DownMarginPercentage { get; set; }
 

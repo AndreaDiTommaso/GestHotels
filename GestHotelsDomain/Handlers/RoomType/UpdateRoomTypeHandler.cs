@@ -36,9 +36,10 @@ namespace GestHotelsDomain.Handlers.RoomType
             {
                 roomType.HotelId = command.HotelId;
             }
-            if (command.Cardnality != 0)
+            if (command.Cardinality != 0)
             {
-                roomType.Cardnality = command.Cardnality;
+                return "Update Cardinality is not allowed";
+
             }
             if (command.TopMarginPercentage != 0)
             {
