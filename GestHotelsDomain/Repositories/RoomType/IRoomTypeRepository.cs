@@ -9,8 +9,8 @@ namespace GestHotelsDomain.Repositories.RoomType
     {
         public Task<List<Entities.RoomType>> GetRoomTypeListAsync();
         public Task<Entities.RoomType> GetRoomTypeByIdAsync(int Id);
-        public Task<Entities.RoomType> AddRoomTypeAsync(Entities.RoomType roomType);
-        public Task<int> UpdateRoomTypeAsync(Entities.RoomType roomType);
-        public Task<int> DeleteRoomTypeAsync(int Id);
+        public Task<string> AddRoomTypeAsync(Entities.RoomType roomType);
+        public Task<string> UpdateRoomTypeAsync(Entities.RoomType roomType);
+        public Task<string> DeleteRoomTypeAsync(int Id);
     }
 }

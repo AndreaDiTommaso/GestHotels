@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using MediatR;
 namespace GestHotelsDomain.Commands.RoomType
 {
-    public class DeleteRoomTypeCommand : IRequest<int>
+    public class DeleteRoomTypeCommand : IRequest<string>
     {
         public int Id { get; set; }
     }

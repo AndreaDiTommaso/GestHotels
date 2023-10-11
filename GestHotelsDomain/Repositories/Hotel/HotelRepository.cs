@@ -18,18 +18,21 @@ namespace GestHotelsDomain.Repositories.Hotel
             _context = dbContext;
         }
 
-        public async Task<Entities.Hotel> AddHotelAsync(Entities.Hotel hotel)
+        public async Task<string> AddHotelAsync(Entities.Hotel hotel)
         {
             var result = _context.Hotel.Add(hotel);
             await _context.SaveChangesAsync();
-            return result.Entity;
+            return String.Format("New Hotel with id = {0} created succesfully", result.Entity.Id);
+
         }
 
-        public async Task<int> DeleteHotelAsync(int Id)
+        public async Task<string> DeleteHotelAsync(int Id)
         {
             var filteredData = _context.Hotel.Where(x => x.Id == Id).FirstOrDefault();
             _context.Hotel.Remove(filteredData);
-            return await _context.SaveChangesAsync();
+             await _context.SaveChangesAsync();
+            return string.Format("Hotel with id = {0} deleted succesfully", Id);
+
         }
 
         public async Task<Entities.Hotel> GetHotelByIdAsync(int id)
@@ -48,10 +51,12 @@ namespace GestHotelsDomain.Repositories.Hotel
                             .ToListAsync();
         }
 
-        public async Task<int> UpdateHotelAsync(Entities.Hotel hotel)
+        public async Task<string> UpdateHotelAsync(Entities.Hotel hotel)
         {
             _context.Hotel.Update(hotel);
-            return await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
+            return String.Format("Hotel with id = {0} updated succesfully", hotel.Id);
+
         }
     }
 }

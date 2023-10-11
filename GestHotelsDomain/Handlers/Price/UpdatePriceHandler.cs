@@ -9,7 +9,7 @@ using MediatR;
 
 namespace GestHotelsDomain.Handlers.Price
 {
-    public class UpdatePriceHandler : IRequestHandler<UpdatePriceCommand, int>
+    public class UpdatePriceHandler : IRequestHandler<UpdatePriceCommand, string>
     {
     
         private readonly IPriceRepository _priceRepository;
@@ -18,11 +18,11 @@ namespace GestHotelsDomain.Handlers.Price
         {
             _priceRepository = priceRepository;
         }
-        public async Task<int> Handle(UpdatePriceCommand command, CancellationToken cancellationToken)
+        public async Task<string> Handle(UpdatePriceCommand command, CancellationToken cancellationToken)
         {
             var price = await _priceRepository.GetPriceByIdAsync(command.Id);
             if (price == null)
-                return default;
+                return String.Format("Price with id = {0} not found", command.Id);
 
             if (command.Cost != 0)
             {

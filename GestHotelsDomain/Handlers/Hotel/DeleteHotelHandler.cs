@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using MediatR;
 namespace GestHotelsDomain.Handlers.Hotel
 {
-    public class DeleteHotelHandler : IRequestHandler<DeleteHotelCommand, int>
+    public class DeleteHotelHandler : IRequestHandler<DeleteHotelCommand, string>
     {
         private readonly IHotelRepository _hotelRepository;
 
@@ -16,11 +16,12 @@ namespace GestHotelsDomain.Handlers.Hotel
         {
             _hotelRepository = hotelRepository;
         }
-        public async Task<int> Handle(DeleteHotelCommand command, CancellationToken cancellationToken)
+        public async Task<string> Handle(DeleteHotelCommand command, CancellationToken cancellationToken)
         {
             var hotel = await _hotelRepository.GetHotelByIdAsync(command.Id);
             if (hotel == null)
-                return default;
+                return String.Format("Hotel with id = {0} not found", command.Id);
+
 
             return await _hotelRepository.DeleteHotelAsync(hotel.Id);
         }

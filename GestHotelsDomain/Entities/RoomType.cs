@@ -20,32 +20,32 @@ namespace GestHotelsDomain.Entities
         public int TopMarginPercentage { get; set; }
         public int DownMarginPercentage { get; set; }
 
-        public void Modify(RoomType newRoomType)
-        {
-            if (newRoomType.Name != null)
-            {
-                this.Name = newRoomType.Name;
-            }
-            if (newRoomType.TypeName != null)
-            {
-                this.TypeName = newRoomType.TypeName;
-            }
-            if (newRoomType.HotelId != 0)
-            {
-                this.HotelId = newRoomType.HotelId;
-            }
-            if (newRoomType.Cardnality != 0)
-            {
-                this.Cardnality = newRoomType.Cardnality;
-            }
-            if (newRoomType.TopMarginPercentage != 0)
-            {
-                this.TopMarginPercentage = newRoomType.TopMarginPercentage;
-            }
-            if (newRoomType.DownMarginPercentage != 0)
-            {
-                this.DownMarginPercentage = newRoomType.DownMarginPercentage;
-            }
-        }
+        //public void Modify(RoomType newRoomType)
+        //{
+        //    if (newRoomType.Name != null)
+        //    {
+        //        this.Name = newRoomType.Name;
+        //    }
+        //    if (newRoomType.TypeName != null)
+        //    {
+        //        this.TypeName = newRoomType.TypeName;
+        //    }
+        //    if (newRoomType.HotelId != 0)
+        //    {
+        //        this.HotelId = newRoomType.HotelId;
+        //    }
+        //    if (newRoomType.Cardnality != 0)
+        //    {
+        //        this.Cardnality = newRoomType.Cardnality;
+        //    }
+        //    if (newRoomType.TopMarginPercentage != 0)
+        //    {
+        //        this.TopMarginPercentage = newRoomType.TopMarginPercentage;
+        //    }
+        //    if (newRoomType.DownMarginPercentage != 0)
+        //    {
+        //        this.DownMarginPercentage = newRoomType.DownMarginPercentage;
+        //    }
+        //}
     }
 }

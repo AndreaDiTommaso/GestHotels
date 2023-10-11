@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using MediatR;
 namespace GestHotelsDomain.Handlers.Price
 {
-    public class DeletePriceHandler : IRequestHandler<DeletePriceCommand, int>
+    public class DeletePriceHandler : IRequestHandler<DeletePriceCommand, string>
     {
         private readonly IPriceRepository _priceRepository;
 
@@ -16,11 +16,11 @@ namespace GestHotelsDomain.Handlers.Price
         {
             _priceRepository = priceRepository;
         }
-        public async Task<int> Handle(DeletePriceCommand command, CancellationToken cancellationToken)
+        public async Task<string> Handle(DeletePriceCommand command, CancellationToken cancellationToken)
         {
             var hotel = await _priceRepository.GetPriceByIdAsync(command.Id);
             if (hotel == null)
-                return default;
+                return String.Format("Price with id = {0} not found", command.Id);
 
             return await _priceRepository.DeletePriceAsync(hotel.Id);
         }

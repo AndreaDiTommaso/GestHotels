@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using MediatR;
 namespace GestHotelsDomain.Handlers.Price
 {
-    public class CreatePriceHandler : IRequestHandler<CreatePriceCommand, Entities.Price>
+    public class CreatePriceHandler : IRequestHandler<CreatePriceCommand, string>
     {
         private readonly IPriceRepository _priceRepository;
 
@@ -16,7 +16,7 @@ namespace GestHotelsDomain.Handlers.Price
         {
             _priceRepository = priceRepository;
         }
-        public async Task<Entities.Price> Handle(CreatePriceCommand command, CancellationToken cancellationToken)
+        public async Task<string> Handle(CreatePriceCommand command, CancellationToken cancellationToken)
         {
             var price = new Entities.Price()
             {

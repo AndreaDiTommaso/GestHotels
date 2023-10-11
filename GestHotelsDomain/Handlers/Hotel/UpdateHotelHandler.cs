@@ -9,7 +9,7 @@ using MediatR;
 
 namespace GestHotelsDomain.Handlers.Hotel
 {
-    public class UpdateHotelHandler : IRequestHandler<UpdateHotelCommand, int>
+    public class UpdateHotelHandler : IRequestHandler<UpdateHotelCommand, string>
     {
     
         private readonly IHotelRepository _hotelRepository;
@@ -18,11 +18,12 @@ namespace GestHotelsDomain.Handlers.Hotel
         {
             _hotelRepository = hotelRepository;
         }
-        public async Task<int> Handle(UpdateHotelCommand command, CancellationToken cancellationToken)
+        public async Task<string> Handle(UpdateHotelCommand command, CancellationToken cancellationToken)
         {
             var hotel = await _hotelRepository.GetHotelByIdAsync(command.Id);
             if (hotel == null)
-                return default;
+                return String.Format("Hotel with id = {0} not found", command.Id);
+
             if (command.Name != null)
             {
                 hotel.Name = command.Name;

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using MediatR;
 namespace GestHotelsDomain.Handlers.RoomType
 {
-    public class CreateRoomTypeHandler : IRequestHandler<CreateRoomTypeCommand, Entities.RoomType>
+    public class CreateRoomTypeHandler : IRequestHandler<CreateRoomTypeCommand, string>
     {
         private readonly IRoomTypeRepository _roomTypeRepository;
 
@@ -16,7 +16,7 @@ namespace GestHotelsDomain.Handlers.RoomType
         {
             _roomTypeRepository = roomTypeRepository;
         }
-        public async Task<Entities.RoomType> Handle(CreateRoomTypeCommand command, CancellationToken cancellationToken)
+        public async Task<string> Handle(CreateRoomTypeCommand command, CancellationToken cancellationToken)
         {
             var roomType = new Entities.RoomType()
             {

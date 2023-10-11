@@ -2,14 +2,15 @@
 using GestHotelsDomain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace GestHotelsApi.Servicies
+namespace GestHotelsDomain.Services
 {
     public class HierarchyHelper
     {
+
         public Hotel hotel;
         public RoomType room;
         public Price price;
-        public HierarchyHelper(HotelDbContext context,Price price)
+        public HierarchyHelper(HotelDbContext context, Price price)
         {
             this.price = price;
             this.room = context.RoomType.FirstOrDefault(r => r.Id == price.RoomTypeId);
@@ -18,10 +19,10 @@ namespace GestHotelsApi.Servicies
                 .ThenInclude(r => r.PriceList)
                 .FirstOrDefault(h => h.Id == room.HotelId);
         }
-        public  int GetPrevCardinality() 
+        public int GetPrevCardinality()
         {
             int result = 0;
-            try 
+            try
             {
                 List<int> listLowerCardinality = this.hotel.Rooms.Select(r => r.Cardnality).Where(c => c < this.room.Cardnality).ToList();
                 if (listLowerCardinality != null)
@@ -30,7 +31,7 @@ namespace GestHotelsApi.Servicies
                 }
                 return result;
             }
-            catch (Exception e) 
+            catch (Exception e)
             {
                 return -1;
             }
@@ -52,7 +53,7 @@ namespace GestHotelsApi.Servicies
             {
                 return -1;
             }
-           
+
         }
         public List<RoomType> GetByCardinality(int cardinality)
         {
@@ -66,9 +67,9 @@ namespace GestHotelsApi.Servicies
             {
                 return null;
             }
-           
+
         }
-        public decimal GetMinCost(List<RoomType> rooms) 
+        public decimal GetMinCost(List<RoomType> rooms)
         {
             try
             {
@@ -88,7 +89,7 @@ namespace GestHotelsApi.Servicies
             {
                 return -1;
             }
-         
+
         }
         public decimal GetMaxCost(List<RoomType> rooms)
         {
@@ -110,11 +111,11 @@ namespace GestHotelsApi.Servicies
             {
                 return -1;
             }
-           
+
         }
         public decimal GetUpperBound(decimal minUpperCost)
         {
-           return minUpperCost - (this.price.Cost * this.room.TopMarginPercentage) / 100;
+            return minUpperCost - (this.price.Cost * this.room.TopMarginPercentage) / 100;
 
         }
         public decimal GetLowerBound(decimal maxLowerBound)
@@ -147,23 +148,23 @@ namespace GestHotelsApi.Servicies
         {
 
             int prevCardinality = GetPrevCardinality();
-            decimal lowerBound=0;
+            decimal lowerBound = 0;
             bool resultTop = false;
             bool resultDown = false;
             if (prevCardinality > 0)
             {
-                
-                try 
+
+                try
                 {
                     List<RoomType> list = GetByCardinality(prevCardinality);
                     decimal maxCost = GetMaxCost(list);
                     lowerBound = GetLowerBound(maxCost);
                 }
-                catch 
+                catch
                 {
                     lowerBound = 0;
                 }
-               
+
             }
             if (lowerBound == 0)
             {
@@ -174,10 +175,10 @@ namespace GestHotelsApi.Servicies
                 resultDown = ValidateLowerBound(lowerBound);
             }
             int nextCardinality = GetNextCardinality();
-            decimal upperBound=0;
+            decimal upperBound = 0;
             if (nextCardinality > 0)
             {
-               
+
                 try
                 {
                     upperBound = GetUpperBound(GetMinCost(GetByCardinality(nextCardinality)));
@@ -186,7 +187,7 @@ namespace GestHotelsApi.Servicies
                 {
                     upperBound = 0;
                 }
-                
+
             }
             if (upperBound == 0)
             {
@@ -206,6 +207,5 @@ namespace GestHotelsApi.Servicies
             }
 
         }
-
     }
 }

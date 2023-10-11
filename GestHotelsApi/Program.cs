@@ -1,7 +1,10 @@
 using GestHotelsDomain.Data;
 using GestHotelsDomain.Handlers.Hotel;
 using GestHotelsDomain.Queries.Hotel;
+using GestHotelsDomain.Queries.Price;
 using GestHotelsDomain.Repositories.Hotel;
+using GestHotelsDomain.Repositories.Price;
+using GestHotelsDomain.Repositories.RoomType;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
@@ -22,6 +25,8 @@ builder.Services.AddMediatR(typeof(GetPriceListQuery).GetTypeInfo().Assembly);
 //builder.Services.AddMediatR(typeof(GetHotelByIdQuery).Assembly, typeof(GetHotelListQuery).Assembly);
 //builder.Services.AddMediatR(typeof(GetHotelListQuery).Assembly, typeof(GetHotelListQuery).Assembly);
 builder.Services.AddScoped<IPriceRepository, PriceRepository>();
+builder.Services.AddScoped<IHotelRepository, HotelRepository>();
+builder.Services.AddScoped<IRoomTypeRepository, RoomTypeRepository>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

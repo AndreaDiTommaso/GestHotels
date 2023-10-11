@@ -9,8 +9,8 @@ namespace GestHotelsDomain.Repositories.Price
     {
         public Task<List<Entities.Price>> GetPriceListAsync();
         public Task<Entities.Price> GetPriceByIdAsync(int Id);
-        public Task<Entities.Price> AddPriceAsync(Entities.Price price);
-        public Task<int> UpdatePriceAsync(Entities.Price price);
-        public Task<int> DeletePriceAsync(int Id);
+        public Task<string> AddPriceAsync(Entities.Price price);
+        public Task<string> UpdatePriceAsync(Entities.Price price);
+        public Task<string> DeletePriceAsync(int Id);
     }
 }

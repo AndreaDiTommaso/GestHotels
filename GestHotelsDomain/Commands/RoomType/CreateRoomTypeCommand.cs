@@ -8,7 +8,7 @@ using MediatR;
 
 namespace GestHotelsDomain.Commands.RoomType
 {
-    public class CreateRoomTypeCommand : IRequest<Entities.RoomType>
+    public class CreateRoomTypeCommand : IRequest<string>
     {
         
         public string? Name { get; set; }

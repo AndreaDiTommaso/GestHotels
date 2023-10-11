@@ -18,18 +18,21 @@ namespace GestHotelsDomain.Repositories.RoomType
             _context = dbContext;
         }
 
-        public async Task<Entities.RoomType> AddRoomTypeAsync(Entities.RoomType roomType)
+        public async Task<string> AddRoomTypeAsync(Entities.RoomType roomType)
         {
             var result = _context.RoomType.Add(roomType);
             await _context.SaveChangesAsync();
-            return result.Entity;
+            return String.Format("New Price with id = {0} created succesfully", result.Entity.Id);
+
         }
 
-        public async Task<int> DeleteRoomTypeAsync(int Id)
+        public async Task<string> DeleteRoomTypeAsync(int Id)
         {
             var filteredData = _context.RoomType.Where(x => x.Id == Id).FirstOrDefault();
             _context.RoomType.Remove(filteredData);
-            return await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
+            return string.Format("RoomType with id = {0} deleted succesfully", Id);
+
         }
 
         public async Task<Entities.RoomType> GetRoomTypeByIdAsync(int id)
@@ -46,10 +49,12 @@ namespace GestHotelsDomain.Repositories.RoomType
                             .ToListAsync();
         }
 
-        public async Task<int> UpdateRoomTypeAsync(Entities.RoomType roomType)
+        public async Task<string> UpdateRoomTypeAsync(Entities.RoomType roomType)
         {
             _context.RoomType.Update(roomType);
-            return await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
+            return String.Format("RoomType with id = {0} updated succesfully", roomType.Id);
+
         }
     }
 }

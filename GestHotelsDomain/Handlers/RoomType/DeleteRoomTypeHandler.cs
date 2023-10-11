@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using MediatR;
 namespace GestHotelsDomain.Handlers.RoomType
 {
-    public class DeleteRoomTypeHandler : IRequestHandler<DeleteRoomTypeCommand, int>
+    public class DeleteRoomTypeHandler : IRequestHandler<DeleteRoomTypeCommand, string>
     {
         private readonly IRoomTypeRepository _roomTypeRepository;
 
@@ -16,11 +16,12 @@ namespace GestHotelsDomain.Handlers.RoomType
         {
             _roomTypeRepository = roomTypeRepository;
         }
-        public async Task<int> Handle(DeleteRoomTypeCommand command, CancellationToken cancellationToken)
+        public async Task<string> Handle(DeleteRoomTypeCommand command, CancellationToken cancellationToken)
         {
             var hotel = await _roomTypeRepository.GetRoomTypeByIdAsync(command.Id);
             if (hotel == null)
-                return default;
+                return String.Format("RoomType with id = {0} not found", command.Id);
+
 
             return await _roomTypeRepository.DeleteRoomTypeAsync(hotel.Id);
         }

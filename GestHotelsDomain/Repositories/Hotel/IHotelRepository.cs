@@ -9,8 +9,8 @@ namespace GestHotelsDomain.Repositories.Hotel
     {
         public Task<List<Entities.Hotel>> GetHotelListAsync();
         public Task<Entities.Hotel> GetHotelByIdAsync(int Id);
-        public Task<Entities.Hotel> AddHotelAsync(Entities.Hotel hotel);
-        public Task<int> UpdateHotelAsync(Entities.Hotel hotel);
-        public Task<int> DeleteHotelAsync(int Id);
+        public Task<string> AddHotelAsync(Entities.Hotel hotel);
+        public Task<string> UpdateHotelAsync(Entities.Hotel hotel);
+        public Task<string> DeleteHotelAsync(int Id);
     }
 }

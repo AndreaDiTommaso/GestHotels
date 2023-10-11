@@ -23,21 +23,21 @@ namespace GestHotelsDomain.Entities
         [Required]
         public DateTime Date { get; set; }
 
-        public void Modify(Price newPrice)
-        {
-            if (newPrice.Cost != 0)
-            {
-                this.Cost = newPrice.Cost;
-            }
-            if (newPrice.Date != new DateTime(1,1,1))
-            {
-                //01 / 01 / 0001 00:00:00
-                this.Date = newPrice.Date;
-            }
-            if (newPrice.RoomTypeId != 0)
-            {
-                this.RoomTypeId = newPrice.RoomTypeId;
-            }
-        }
+        //public void Modify(Price newPrice)
+        //{
+        //    if (newPrice.Cost != 0)
+        //    {
+        //        this.Cost = newPrice.Cost;
+        //    }
+        //    if (newPrice.Date != new DateTime(1,1,1))
+        //    {
+        //        //01 / 01 / 0001 00:00:00
+        //        this.Date = newPrice.Date;
+        //    }
+        //    if (newPrice.RoomTypeId != 0)
+        //    {
+        //        this.RoomTypeId = newPrice.RoomTypeId;
+        //    }
+        //}
     }
 }

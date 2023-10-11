@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using MediatR;
 namespace GestHotelsDomain.Handlers.Hotel
 {
-    public class CreateHotelHandler : IRequestHandler<CreateHotelCommand, Entities.Hotel>
+    public class CreateHotelHandler : IRequestHandler<CreateHotelCommand, string>
     {
         private readonly IHotelRepository _hotelRepository;
 
@@ -16,7 +16,7 @@ namespace GestHotelsDomain.Handlers.Hotel
         {
             _hotelRepository = hotelRepository;
         }
-        public async Task<Entities.Hotel> Handle(CreateHotelCommand command, CancellationToken cancellationToken)
+        public async Task<string> Handle(CreateHotelCommand command, CancellationToken cancellationToken)
         {
             var hotel = new Entities.Hotel()
             {

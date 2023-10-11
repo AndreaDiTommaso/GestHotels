@@ -7,7 +7,7 @@ using GestHotelsDomain.Entities;
 using MediatR;
 namespace GestHotelsDomain.Commands.Price
 {
-    public class UpdatePriceCommand : IRequest<int>
+    public class UpdatePriceCommand : IRequest<string>
     {
         public int Id { get; private set; }
         public decimal Cost { get; set; }
