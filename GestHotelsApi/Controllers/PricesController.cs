@@ -8,6 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using GestHotelsDomain.Entities;
 using GestHotelsApi.Servicies;
 using GestHotelsDomain.Data;
+using MediatR;
+using GestHotelsDomain.Queries.Price;
+using GestHotelsDomain.Commands.Price;
 
 namespace GestHotelsApi.Controllers
 {
@@ -16,131 +19,153 @@ namespace GestHotelsApi.Controllers
     public class PricesController : ControllerBase
     {
         private readonly HotelDbContext _context;
-
-        public PricesController(HotelDbContext context)
+        private readonly IMediator _mediator;
+        public PricesController(HotelDbContext context, IMediator mediator)
         {
             _context = context;
+            _mediator = mediator;
         }
 
         // GET: api/Prices
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Price>>> GetPrice()
         {
-          if (_context.Price == null)
-          {
-              return NotFound();
-          }
-            return await _context.Price.ToListAsync();
+          //if (_context.Price == null)
+          //{
+          //    return NotFound();
+          //}
+          //  return await _context.Price.ToListAsync();
+            var price = await _mediator.Send(new GetPriceListQuery());
+
+            return price;
         }
 
         // GET: api/Prices/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Price>> GetPrice(int id)
         {
-          if (_context.Price == null)
-          {
-              return NotFound();
-          }
-            var price = await _context.Price.FindAsync(id);
+            //if (_context.Price == null)
+            //{
+            //    return NotFound();
+            //}
+            //  var price = await _context.Price.FindAsync(id);
 
-            if (price == null)
-            {
-                return NotFound();
-            }
+            //  if (price == null)
+            //  {
+            //      return NotFound();
+            //  }
+
+            //  return price;
+            var price = await _mediator.Send(new GetPriceByIdQuery() { Id = id });
 
             return price;
         }
+        
 
         // PUT: api/Prices/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPrice(int id, Price newPrice)
+        public async Task<int> PutPrice(int id, Price price)
         {
-           
-            var price = await _context.Price.FindAsync(id);
-            if (price == null)
-            {
-                return NotFound();
-            }
-            price.Modify(newPrice);
-            _context.Entry(price).State = EntityState.Modified;
 
-            try
-            {
-                HierarchyHelper hierarchyHelper = new HierarchyHelper(_context, price);
-                if (hierarchyHelper.ValidatePrice())
-                {
-                    await _context.SaveChangesAsync();
-                    return CreatedAtAction("GetPrice", new { id = price.Id }, price);
-                }
-                else
-                {
-                    return Problem("The price does not respect the hierarchy rules");
-                }
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PriceExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            //var price = await _context.Price.FindAsync(id);
+            //if (price == null)
+            //{
+            //    return NotFound();
+            //}
+            //price.Modify(newPrice);
+            //_context.Entry(price).State = EntityState.Modified;
 
-            return NoContent();
+            //try
+            //{
+            //    HierarchyHelper hierarchyHelper = new HierarchyHelper(_context, price);
+            //    if (hierarchyHelper.ValidatePrice())
+            //    {
+            //        await _context.SaveChangesAsync();
+            //        return CreatedAtAction("GetPrice", new { id = price.Id }, price);
+            //    }
+            //    else
+            //    {
+            //        return Problem("The price does not respect the hierarchy rules");
+            //    }
+            //}
+            //catch (DbUpdateConcurrencyException)
+            //{
+            //    if (!PriceExists(id))
+            //    {
+            //        return NotFound();
+            //    }
+            //    else
+            //    {
+            //        throw;
+            //    }
+            //}
+
+            //return NoContent();
+            var isPriceUpdated = await _mediator.Send(new UpdatePriceCommand(
+            id,
+            price.Cost,
+             price.RoomTypeId,
+            price.Date
+           ));
+            return isPriceUpdated;
         }
 
         // POST: api/Prices
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Price>> PostPrice(Price price)
+        public async Task<ActionResult<Price>> PostPrice(Price newPrice)
         {
-          if (_context.Price == null)
-          {
-              return Problem("Entity set 'HotelDbContext.Price'  is null.");
-          }
-            _context.Price.Add(price);
-            HierarchyHelper hierarchyHelper = new HierarchyHelper(_context,price);
-          if (hierarchyHelper.ValidatePrice())
-            {
-                await _context.SaveChangesAsync();
-                return CreatedAtAction("GetPrice", new { id = price.Id }, price);
-            }
-          else
-            {
-                return Problem("The price does not respect the hierarchy rules");
-            } 
+            //if (_context.Price == null)
+            //{
+            //    return Problem("Entity set 'HotelDbContext.Price'  is null.");
+            //}
+            //  _context.Price.Add(price);
+            //  HierarchyHelper hierarchyHelper = new HierarchyHelper(_context,price);
+            //if (hierarchyHelper.ValidatePrice())
+            //  {
+            //      await _context.SaveChangesAsync();
+            //      return CreatedAtAction("GetPrice", new { id = price.Id }, price);
+            //  }
+            //else
+            //  {
+            //      return Problem("The price does not respect the hierarchy rules");
+            //  } 
+            var price = await _mediator.Send(new CreatePriceCommand(
+                newPrice.Cost,
+                newPrice.RoomTypeId,
+                newPrice.Date));
+            return price;
 
-            
+
         }
 
         // DELETE: api/Prices/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePrice(int id)
+        public async Task<int> DeletePrice(int id)
         {
-            if (_context.Price == null)
-            {
-                return NotFound();
-            }
-            var price = await _context.Price.FindAsync(id);
-            if (price == null)
-            {
-                return NotFound();
-            }
+            //if (_context.Price == null)
+            //{
+            //    return NotFound();
+            //}
+            //var price = await _context.Price.FindAsync(id);
+            //if (price == null)
+            //{
+            //    return NotFound();
+            //}
 
-            _context.Price.Remove(price);
-            await _context.SaveChangesAsync();
+            //_context.Price.Remove(price);
+            //await _context.SaveChangesAsync();
 
-            return NoContent();
+            //return NoContent();
+            return await _mediator.Send(new DeletePriceCommand() { Id = id });
+
         }
 
-        private bool PriceExists(int id)
-        {
-            return (_context.Price?.Any(e => e.Id == id)).GetValueOrDefault();
-        }
+        //private bool PriceExists(int id)
+        //{
+        //    return (_context.Price?.Any(e => e.Id == id)).GetValueOrDefault();
+        //}
         //private bool ValidatePrice(Price price)
         //{
         //    RoomType roomType = _context.RoomType.FirstOrDefault(r => r.Id == price.RoomTypeId);
@@ -178,7 +203,7 @@ namespace GestHotelsApi.Controllers
         //                if (x < nextPrice)
         //                { nextPrice = x; }
         //            }
-                    
+
         //        }
         //        if (room.Cardnality == prevCardinality && room.PriceList != null)
         //        {
@@ -204,7 +229,7 @@ namespace GestHotelsApi.Controllers
         //    {
         //        return false;
         //    }
-           
+
         //}
     }
 }

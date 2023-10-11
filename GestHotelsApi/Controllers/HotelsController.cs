@@ -32,7 +32,7 @@ namespace GestHotelsApi.Controllers
             //    .Include(h =>h.Rooms)
             //    .ThenInclude(r =>r.PriceList)
             //    .ToListAsync();
-            var hotel = await _mediator.Send(new GetPriceListQuery());
+            var hotel = await _mediator.Send(new GetHotelListQuery());
 
             return hotel;
         }
@@ -56,7 +56,7 @@ namespace GestHotelsApi.Controllers
             //}
 
             //return hotel;
-            var hotel = await _mediator.Send(new GetPriceByIdQuery() { Id = id });
+            var hotel = await _mediator.Send(new GetHotelByIdQuery() { Id = id });
 
             return hotel;
         }
@@ -138,7 +138,7 @@ namespace GestHotelsApi.Controllers
             //await _context.SaveChangesAsync();
 
             //return NoContent();
-            return await _mediator.Send(new DeletePriceCommand() { Id = id });
+            return await _mediator.Send(new DeleteHotelCommand() { Id = id });
         }
 
         //private bool PersonExists(int id)
